@@ -1,0 +1,36 @@
+Config { -- font = "-*-Fixed-Bold-R-Normal-*-15-*-*-*-*-*-*-*"
+     --    font = "-*-times-*-r-*-*-15-*-*-*-*-*-*-*"
+         font = "xft:terminus:size=10:antialias=true"
+       , bgColor = "black"
+       , fgColor = "grey"
+       , position = TopW L 100
+       , lowerOnStart = True
+       , commands = [ Run Weather "EGPF" ["-t"," <tempF>F","-L","64","-H","77","--normal","green","--high","red","--low","lightblue"] 36000
+                     , Run Cpu ["-L","3","-H","50","--normal","green","--high","red"] 10
+--                     , Run Battery [] 10
+                     , Run Battery         [ "--template" , "Batt: <acstatus>"
+                                             , "--Low"      , "10"        -- units: %
+                                             , "--High"     , "80"        -- units: %
+                                             , "--low"      , "darkred"
+                                             , "--normal"   , "darkorange"
+                                             , "--high"     , "darkgreen"
+                                             , "--" -- battery specific options
+                                             -- discharging status
+                                             , "-o"	   , "<left>% (<timeleft>)"
+                                             -- AC "on" status
+                                             , "-O"	, "<fc=#dAA520>Charging</fc>"
+                                             -- charged status
+                                             , "-i"	, "<fc=#006000>Charged</fc>"
+                                         ] 50
+                     , Run Memory ["-t","Mem: <usedratio>%"] 10
+                     , Run Swap ["-t", "<usedratio>%"] 10
+                     , Run CpuFreq ["-t", "Freq:<cpu0>|<cpu1>|<cpu2>|<cpu3>GHz", "-L", "0", "-H", "2",
+                                        "-l", "lightblue", "-n","white", "-h", "red"] 50
+                     , Run Date "%a %b %_d %l:%M" "date" 10
+                     , Run StdinReader
+                    ]
+       , sepChar = "%"
+       , alignSep = "}{"
+       --, template = "%StdinReader% }{ %cpu% | %memory% * %swap% * %cpufreq% | %battery%   <fc=#ee9a00>%date%</fc> | %EGPF%"
+       , template = "%StdinReader% }{ %cpu% | %memory% / %swap% | %battery%   <fc=#ee9a00>%date%</fc>"
+       }
